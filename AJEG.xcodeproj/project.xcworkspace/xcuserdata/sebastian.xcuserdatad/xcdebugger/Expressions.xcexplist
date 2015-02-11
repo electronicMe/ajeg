@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "jo_processDU(__sFILE*, int&amp;, int&amp;, float*, float*, int, unsigned short const (*) [2], unsigned short const (*) [2]):jo_jpeg.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "CDU">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
