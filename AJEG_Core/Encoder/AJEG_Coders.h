@@ -13,21 +13,6 @@
 #include "AJEG_Core.h"
 
 
-/*!
- *    Encodes / Decodes the source image into the destination image.
- *
- *    Encode = RGB -> JPG
- *    Decode = JPG -> RGB
- *
- *    Returns:
- *    0 for success
- *    1 for invalid input
- *   -1 for unknown error
- */
-int encodeImage(aj_image *sourceImage, aj_image *destinationImage, int quality);
-int decodeImage(aj_image *sourceImage, aj_image *destinationImage);
-
-
 
 /******************************************************************************/
 
@@ -95,7 +80,28 @@ int convDCTToBlockImage(aj_image *sourceImage, aj_image *destinationImage);
 /******************************************************************************/
 
 #pragma mark -
-#pragma mark DTC <--> File
+#pragma mark Block <--> DCT
+
+/*!
+ *    Converts a DCT Image into a quantized image. The standard quantization
+ *    table specified in the AJEG_Tables.h file is used for quantization.
+ *
+ *    Returns:
+ *    0 for success
+ *    1 for invalid input
+ *   -1 for unknown error
+ */
+int convDCTTToQuantizedImage(aj_image *sourceImage, aj_image *destinationImage, int quality);
+
+
+
+
+
+
+/******************************************************************************/
+
+#pragma mark -
+#pragma mark Quantized Image <--> File
 
 /*!
  *    Writes the specified image to the specified path.
@@ -107,7 +113,7 @@ int convDCTToBlockImage(aj_image *sourceImage, aj_image *destinationImage);
  *    1 for invalid input
  *   -1 for unknown error
  */
-int writeDCTImageToFile(aj_image *image, const char *destinationPath, int quality);
+int writeQuantizedImageToFile(aj_image *image, const char *destinationPath);
 
 
 

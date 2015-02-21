@@ -78,6 +78,7 @@ int AJEG_Core::encode(aj_image *rgbImage)
     
     aj_image blockImage;
     aj_image dctImage;
+    aj_image quantizedImage;
     
     
     
@@ -99,7 +100,15 @@ int AJEG_Core::encode(aj_image *rgbImage)
     
     
     
-    if ((result = writeDCTImageToFile(&dctImage, _outputFile.c_str(), 0)) != 0)
+    if ((result = convDCTTToQuantizedImage(&dctImage, &quantizedImage, 100)) != 0)
+    {
+        std::cout << AC_ERROR << "Error converting DCT to Quantized Image" << std::endl;
+        return result;
+    }
+    
+    
+    
+    if ((result = writeQuantizedImageToFile(&quantizedImage, _outputFile.c_str())) != 0)
     {
         std::cout << AC_ERROR << "Error writing DCT Image to file" << std::endl;
         return result;
@@ -307,7 +316,7 @@ int AJEG_Core::setPixel(aj_rgb_Pixel *pixels, aj_image *image, int x, int y, aj_
 {
     if (image->width < x)
         return -1;
-    else if (image->height < x)
+    else if (image->height < y)
         return -1;
     else
     {

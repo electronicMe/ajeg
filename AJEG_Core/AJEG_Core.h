@@ -40,7 +40,8 @@ typedef enum {
     aj_imageType_unknown,
     aj_imageType_rgbImage,
     aj_imageType_blockImage,
-    aj_imageType_dctImage
+    aj_imageType_dctImage,
+    aj_imageType_quantizedImage
 } aj_imageType;
 
 
@@ -49,6 +50,10 @@ typedef struct {
     // Dimension of the image
     int width;
     int height;
+    
+    // Quantization tables
+    uint8_t luminanceQuantizationTable[64];
+    uint8_t chrominanceQuantizationTable[64];
     
     // The type of this image
     aj_imageType imageType;

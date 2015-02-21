@@ -399,40 +399,32 @@ void idct(float &d0, float &d1, float &d2, float &d3, float &d4, float &d5, floa
 /******************************************************************************/
 
 #pragma mark -
-#pragma mark DTC <--> File
+#pragma mark DCT Image <--> Quantized Image
 
-#pragma mark DTC > File
+#pragma mark DCT Image > Quantized Image
 
-void writeJPEGHeaderForImage(FILE *fp, aj_image *image,
-                             uint8_t *luminanceQuantizationTable  , size_t size_luminanceQuantizationTable,
-                             uint8_t *chrominanceQuantizationTable, size_t size_chrominanceQuantizationTable);
-void writeJPEGLuminanceChrominanceTables(FILE *fp,
-                                         uint8_t *dc_luminance_codes   , size_t size_dc_luminance_codes,
-                                         uint8_t *dc_luminance_values  , size_t size_dc_luminance_values,
-                                         uint8_t *ac_luminance_codes   , size_t size_ac_luminance_codes,
-                                         uint8_t *ac_luminance_values  , size_t size_ac_luminance_values,
-                                         uint8_t *dc_chrominance_codes , size_t size_dc_chrominance_codes,
-                                         uint8_t *dc_chrominance_values, size_t size_dc_chrominance_values,
-                                         uint8_t *ac_chrominance_codes , size_t size_ac_chrominance_codes,
-                                         uint8_t *ac_chrominance_values, size_t size_ac_chrominance_values);
-void quantizeAndZigZagChannel(float *sourceChannel, int *destinationChannel, float quantizationTable[64]);
-void writeJPEG_dcEncode(FILE *fp, int &bitBuf, int &bitCnt, int *channel, int dc, uint16_t huffmanTable[256][2]);
-int  writeJPEG_acEncode(FILE *fp, int &bitBuf, int &bitCnt, int *channel,         uint16_t huffmanTable[256][2]);
-void calcBits(int val, uint16_t bits[2]);
-void writeBits(FILE *fp, int &bitBuf, int &bitCnt, uint16_t *bs);
+void quantizeChannel(float *sourceChannel, float *destinationChannel, float quantizationTable[64]);
 
 
-int writeDCTImageToFile(aj_image *image, const char *destinationPath, int quality)
+int convDCTTToQuantizedImage(aj_image *sourceImage, aj_image *destinationImage, int quality)
 {
     //*********************************************************** validate input
-    if (!image || (image->imageType != aj_imageType_dctImage) || !destinationPath)
+    if (!sourceImage || (sourceImage->imageType != aj_imageType_dctImage))
         return 1;
     
     
     
-    //**************************************************************** open file
-    FILE *fp = fopen(destinationPath, "wb");
-    if(!fp)
+    //************************************************ prepare destination image
+    int width  = sourceImage->width;
+    int height = sourceImage->height;
+    
+    destinationImage->width     = width;
+    destinationImage->height    = height;
+    destinationImage->imageType = aj_imageType_quantizedImage;
+    size_t numberOfBlocks       = (ceil(width / 8) * ceil(height / 8));
+    destinationImage->blocks    = (aj_block*)malloc(sizeof(aj_block) * numberOfBlocks);
+    
+    if (!destinationImage->blocks)
         return -1;
     
     
@@ -446,15 +438,12 @@ int writeDCTImageToFile(aj_image *image, const char *destinationPath, int qualit
     
     //********************************************** prepare quantization tables
     
-    uint8_t   luminanceQuantizationTable[64];
-    uint8_t chrominanceQuantizationTable[64];
-    
     for(int i = 0; i < 64; ++i)
     {
         int yti = (luminance_quantization[i]*quality+50)/100;
-        luminanceQuantizationTable[zigZag[i]] = yti < 1 ? 1 : yti > 255 ? 255 : yti;
+        destinationImage->luminanceQuantizationTable[zigZag[i]] = yti < 1 ? 1 : yti > 255 ? 255 : yti;
         int uvti  = (chrominance_quantization[i]*quality+50)/100;
-        chrominanceQuantizationTable[zigZag[i]] = uvti < 1 ? 1 : uvti > 255 ? 255 : uvti;
+        destinationImage->chrominanceQuantizationTable[zigZag[i]] = uvti < 1 ? 1 : uvti > 255 ? 255 : uvti;
     }
     
     
@@ -465,17 +454,87 @@ int writeDCTImageToFile(aj_image *image, const char *destinationPath, int qualit
     {
         for(int col = 0; col < 8; col++, offset++)
         {
-            fdLuminanceQuantizationTable  [offset] = 1 / (  luminanceQuantizationTable[zigZag[offset]] * aasf[row] * aasf[col]);
-            fdChrominanceQuantizationTable[offset] = 1 / (chrominanceQuantizationTable[zigZag[offset]] * aasf[row] * aasf[col]);
+            fdLuminanceQuantizationTable  [offset] = 1 / (  destinationImage->luminanceQuantizationTable[zigZag[offset]] * aasf[row] * aasf[col]);
+            fdChrominanceQuantizationTable[offset] = 1 / (destinationImage->chrominanceQuantizationTable[zigZag[offset]] * aasf[row] * aasf[col]);
         }
     }
     
     
     
+    //*********************************************************** quantize image
+    
+    for (int blockOffset = 0; blockOffset < numberOfBlocks; blockOffset++)
+    {
+        aj_block *sourceBlock      = (sourceImage->blocks      + blockOffset);
+        aj_block *destinationBlock = (destinationImage->blocks + blockOffset);
+        
+        quantizeChannel(sourceBlock->luminance, destinationBlock->luminance, fdLuminanceQuantizationTable);
+        quantizeChannel(sourceBlock->colorBlue, destinationBlock->colorBlue, fdChrominanceQuantizationTable);
+        quantizeChannel(sourceBlock->colorRed , destinationBlock->colorRed , fdChrominanceQuantizationTable);
+    }
+    
+    return 0;
+}
+
+
+void quantizeChannel(float *sourceChannel, float *destinationChannel, float quantizationTable[64])
+{
+    for(int i = 0; i < 64; i++)
+    {
+        float v = sourceChannel[i] * quantizationTable[i];
+        destinationChannel[i] = (int)((v < 0) ? ceilf(v - 0.5f) : floorf(v + 0.5f));
+    }
+}
+
+
+
+
+
+
+/******************************************************************************/
+
+#pragma mark -
+#pragma mark Quantized Image <--> File
+
+
+void writeJPEGHeaderForImage(FILE *fp, aj_image *image,
+                             uint8_t *luminanceQuantizationTable  , size_t size_luminanceQuantizationTable,
+                             uint8_t *chrominanceQuantizationTable, size_t size_chrominanceQuantizationTable);
+void writeJPEGLuminanceChrominanceTables(FILE *fp,
+                                         uint8_t *dc_luminance_codes   , size_t size_dc_luminance_codes,
+                                         uint8_t *dc_luminance_values  , size_t size_dc_luminance_values,
+                                         uint8_t *ac_luminance_codes   , size_t size_ac_luminance_codes,
+                                         uint8_t *ac_luminance_values  , size_t size_ac_luminance_values,
+                                         uint8_t *dc_chrominance_codes , size_t size_dc_chrominance_codes,
+                                         uint8_t *dc_chrominance_values, size_t size_dc_chrominance_values,
+                                         uint8_t *ac_chrominance_codes , size_t size_ac_chrominance_codes,
+                                         uint8_t *ac_chrominance_values, size_t size_ac_chrominance_values);
+void zigZagChannel(float *sourceChannel, float *destinationChannel);
+int  writeJPEG_dcEncode(FILE *fp, int &bitBuf, int &bitCnt, float *channel, int dc, uint16_t huffmanTable[256][2]);
+void writeJPEG_acEncode(FILE *fp, int &bitBuf, int &bitCnt, float *channel,         uint16_t huffmanTable[256][2]);
+void calcBits(int val, uint16_t bits[2]);
+void writeBits(FILE *fp, int &bitBuf, int &bitCnt, uint16_t *bs);
+
+
+int writeQuantizedImageToFile(aj_image *image, const char *destinationPath)
+{
+    //*********************************************************** validate input
+    if (!image || (image->imageType != aj_imageType_quantizedImage) || !destinationPath)
+        return 1;
+    
+    
+    
+    //**************************************************************** open file
+    FILE *fp = fopen(destinationPath, "wb");
+    if(!fp)
+        return -1;
+    
+    
+    
     //******************************************************** write file header
     writeJPEGHeaderForImage(fp, image,
-                              luminanceQuantizationTable, sizeof(luminanceQuantizationTable),
-                            chrominanceQuantizationTable, sizeof(chrominanceQuantizationTable));
+                              image->luminanceQuantizationTable, sizeof(image->luminanceQuantizationTable),
+                            image->chrominanceQuantizationTable, sizeof(image->chrominanceQuantizationTable));
     
     
     
@@ -507,28 +566,28 @@ int writeDCTImageToFile(aj_image *image, const char *destinationPath, int qualit
     {
         aj_block *block = (image->blocks + blockOffset);
         
-        int luminance[64];
-        int colorBlue[64];
-        int  colorRed[64];
+        float luminance[64];
+        float colorBlue[64];
+        float  colorRed[64];
         
         //************************************************************ luminance
-        quantizeAndZigZagChannel(block->luminance,            luminance,               fdLuminanceQuantizationTable);
-                       writeJPEG_dcEncode(fp, bitBuf, bitCnt, luminance, dc_luminance, luminance_dc_huffmanTable);
-        dc_luminance = writeJPEG_acEncode(fp, bitBuf, bitCnt, luminance,               luminance_ac_huffmanTable);
+        zigZagChannel(block->luminance, luminance);
+        dc_luminance = writeJPEG_dcEncode(fp, bitBuf, bitCnt, luminance, dc_luminance, luminance_dc_huffmanTable);
+                       writeJPEG_acEncode(fp, bitBuf, bitCnt, luminance,               luminance_ac_huffmanTable);
         
         
         
         //*********************************************************** color blue
-        quantizeAndZigZagChannel(block->colorBlue,            colorBlue,               fdChrominanceQuantizationTable);
-                       writeJPEG_dcEncode(fp, bitBuf, bitCnt, colorBlue, dc_colorBlue, chrominance_dc_huffmanTable);
-        dc_colorBlue = writeJPEG_acEncode(fp, bitBuf, bitCnt, colorBlue,               chrominance_ac_huffmanTable);
+        zigZagChannel(block->colorBlue, colorBlue);
+        dc_colorBlue = writeJPEG_dcEncode(fp, bitBuf, bitCnt, colorBlue, dc_colorBlue, chrominance_dc_huffmanTable);
+                       writeJPEG_acEncode(fp, bitBuf, bitCnt, colorBlue,               chrominance_ac_huffmanTable);
         
         
         
         //************************************************************ color red
-        quantizeAndZigZagChannel(block->colorRed,            colorRed,              fdChrominanceQuantizationTable);
-                      writeJPEG_dcEncode(fp, bitBuf, bitCnt, colorRed, dc_colorRed, chrominance_dc_huffmanTable);
-        dc_colorRed = writeJPEG_acEncode(fp, bitBuf, bitCnt, colorRed,              chrominance_ac_huffmanTable);
+        zigZagChannel(block->colorRed, colorRed);
+        dc_colorRed = writeJPEG_dcEncode(fp, bitBuf, bitCnt, colorRed, dc_colorRed, chrominance_dc_huffmanTable);
+                      writeJPEG_acEncode(fp, bitBuf, bitCnt, colorRed,              chrominance_ac_huffmanTable);
     }
     
     
@@ -690,19 +749,18 @@ void writeJPEGLuminanceChrominanceTables(FILE *fp,
 }
 
 
-void quantizeAndZigZagChannel(float *sourceChannel, int *destinationChannel, float quantizationTable[64])
+void zigZagChannel(float *sourceChannel, float *destinationChannel)
 {
     for(int i = 0; i < 64; i++)
     {
-        float v = sourceChannel[i] * quantizationTable[i];
-        destinationChannel[zigZag[i]] = (int)((v < 0) ? ceilf(v - 0.5f) : floorf(v + 0.5f));
+        destinationChannel[zigZag[i]] = sourceChannel[i];
     }
 }
 
 
-void writeJPEG_dcEncode(FILE *fp, int &bitBuf, int &bitCnt, int *channel, int dc, uint16_t huffmanTable[256][2])
+int writeJPEG_dcEncode(FILE *fp, int &bitBuf, int &bitCnt, float *channel, int dc, uint16_t huffmanTable[256][2])
 {
-    int diff = channel[0] - dc;
+    int diff = (int)channel[0] - dc;
     if (diff == 0)
         writeBits(fp, bitBuf, bitCnt, huffmanTable[0]);
     else
@@ -712,30 +770,32 @@ void writeJPEG_dcEncode(FILE *fp, int &bitBuf, int &bitCnt, int *channel, int dc
         writeBits(fp, bitBuf, bitCnt, huffmanTable[bits[1]]);
         writeBits(fp, bitBuf, bitCnt, bits);
     }
+    
+    return (int)channel[0];
 }
 
 
-int writeJPEG_acEncode(FILE *fp, int &bitBuf, int &bitCnt, int *channel, uint16_t huffmanTable[256][2])
+void writeJPEG_acEncode(FILE *fp, int &bitBuf, int &bitCnt, float *channel, uint16_t huffmanTable[256][2])
 {
     uint16_t EOB[2]       = { huffmanTable[0x00][0], huffmanTable[0x00][1] };
     uint16_t M16zeroes[2] = { huffmanTable[0xF0][0], huffmanTable[0xF0][1] };
     
     int end0pos = 63;
     
-    while ((end0pos > 0) && (channel[end0pos] == 0)) end0pos--;
+    while ((end0pos > 0) && ((int)channel[end0pos] == 0)) end0pos--;
     
     // end0pos = first element in reverse order !=0
     if(end0pos == 0)
     {
         writeBits(fp, bitBuf, bitCnt, EOB);
-        return channel[0];
+        return;
     }
     
     
     for(int i = 1; i <= end0pos; i++)
     {
         int startpos = i;
-        while ((channel[i] == 0) && (i <= end0pos)) i++;
+        while (((int)channel[i] == 0) && (i <= end0pos)) i++;
         
         int nrzeroes = i - startpos;
         if ( nrzeroes >= 16 )
@@ -749,7 +809,7 @@ int writeJPEG_acEncode(FILE *fp, int &bitBuf, int &bitCnt, int *channel, uint16_
         }
         
         unsigned short bits[2];
-        calcBits(channel[i], bits);
+        calcBits((int)channel[i], bits);
         writeBits(fp, bitBuf, bitCnt, huffmanTable[(nrzeroes<<4)+bits[1]]);
         writeBits(fp, bitBuf, bitCnt, bits);
     }
@@ -758,7 +818,7 @@ int writeJPEG_acEncode(FILE *fp, int &bitBuf, int &bitCnt, int *channel, uint16_
     if(end0pos != 63)
         writeBits(fp, bitBuf, bitCnt, EOB);
     
-    return channel[0];
+    return;
 }
 
 

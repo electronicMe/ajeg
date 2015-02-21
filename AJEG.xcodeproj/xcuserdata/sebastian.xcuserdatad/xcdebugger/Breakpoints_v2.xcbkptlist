@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AJEG_Core/AJEG_Core.cpp"
-            timestampString = "445096468.928665"
+            timestampString = "445370204.121842"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "290"
-            endingLineNumber = "290"
+            startingLineNumber = "299"
+            endingLineNumber = "299"
             landmarkName = "AJEG_Core::loadImageData(std::ifstream&amp; fs, aj_image *image)"
             landmarkType = "5">
          </BreakpointContent>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AJEG_Core/AJEG_Core.cpp"
-            timestampString = "445096468.928665"
+            timestampString = "445370204.121842"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "322"
-            endingLineNumber = "322"
+            startingLineNumber = "331"
+            endingLineNumber = "331"
             landmarkName = "AJEG_Core::setPixel(aj_rgb_Pixel *pixels, aj_image *image, int x, int y, aj_rgb_Pixel pixel)"
             landmarkType = "5">
          </BreakpointContent>
@@ -106,11 +106,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AJEG_Core/AJEG_Core.cpp"
-            timestampString = "445096468.928665"
+            timestampString = "445370204.121842"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "132"
-            endingLineNumber = "132"
+            startingLineNumber = "141"
+            endingLineNumber = "141"
             landmarkName = "AJEG_Core::loadRGBImage()"
             landmarkType = "5">
          </BreakpointContent>
@@ -122,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AJEG_Core/AJEG_Core.cpp"
-            timestampString = "445096468.928665"
+            timestampString = "445370204.121842"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "250"
-            endingLineNumber = "250"
+            startingLineNumber = "259"
+            endingLineNumber = "259"
             landmarkName = "AJEG_Core::loadImageData(std::ifstream&amp; fs, aj_image *image)"
             landmarkType = "5">
          </BreakpointContent>
@@ -138,11 +138,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AJEG_Core/AJEG_Core.cpp"
-            timestampString = "445096468.928665"
+            timestampString = "445370204.121842"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "302"
-            endingLineNumber = "302"
+            startingLineNumber = "311"
+            endingLineNumber = "311"
             landmarkName = "AJEG_Core::loadImageData(std::ifstream&amp; fs, aj_image *image)"
             landmarkType = "5">
          </BreakpointContent>
@@ -154,11 +154,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AJEG_Core/AJEG_Core.cpp"
-            timestampString = "445096468.928665"
+            timestampString = "445370204.121842"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "274"
-            endingLineNumber = "274"
+            startingLineNumber = "283"
+            endingLineNumber = "283"
             landmarkName = "AJEG_Core::loadImageData(std::ifstream&amp; fs, aj_image *image)"
             landmarkType = "5">
          </BreakpointContent>
@@ -180,11 +180,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AJEG_Core/AJEG_Core.cpp"
-            timestampString = "445096468.928665"
+            timestampString = "445370204.121842"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "159"
-            endingLineNumber = "159"
+            startingLineNumber = "168"
+            endingLineNumber = "168"
             landmarkName = "AJEG_Core::loadRGBImage()"
             landmarkType = "5">
          </BreakpointContent>
@@ -196,11 +196,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AJEG_Core/AJEG_Core.cpp"
-            timestampString = "445096468.928665"
+            timestampString = "445370204.121842"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "272"
-            endingLineNumber = "272"
+            startingLineNumber = "281"
+            endingLineNumber = "281"
             landmarkName = "AJEG_Core::loadImageData(std::ifstream&amp; fs, aj_image *image)"
             landmarkType = "5">
          </BreakpointContent>
@@ -212,11 +212,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AJEG_Core/AJEG_Core.cpp"
-            timestampString = "445096468.928665"
+            timestampString = "445370204.121842"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "267"
-            endingLineNumber = "267"
+            startingLineNumber = "276"
+            endingLineNumber = "276"
             landmarkName = "AJEG_Core::loadImageData(std::ifstream&amp; fs, aj_image *image)"
             landmarkType = "5">
          </BreakpointContent>
@@ -228,11 +228,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AJEG_Core/AJEG_Core.cpp"
-            timestampString = "445096468.928665"
+            timestampString = "445370204.121842"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "308"
-            endingLineNumber = "308"
+            startingLineNumber = "317"
+            endingLineNumber = "317"
             landmarkName = "AJEG_Core::setPixel(aj_rgb_Pixel *pixels, aj_image *image, int x, int y, aj_rgb_Pixel pixel)"
             landmarkType = "5">
          </BreakpointContent>
@@ -318,11 +318,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AJEG_Core/AJEG_Core.cpp"
-            timestampString = "445096598.878154"
+            timestampString = "445370204.121842"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "117"
-            endingLineNumber = "117"
+            startingLineNumber = "126"
+            endingLineNumber = "126"
             landmarkName = "AJEG_Core::jo_encode(aj_image *rgbImage)"
             landmarkType = "5">
          </BreakpointContent>
