@@ -10,8 +10,6 @@
 		9E94AF4F1A83E5760069AE1C /* ImageDisplayViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9E94AF4E1A83E5760069AE1C /* ImageDisplayViewController.mm */; };
 		9E94AF551A83EE350069AE1C /* ImageDisplayView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9E94AF541A83EE350069AE1C /* ImageDisplayView.mm */; };
 		9E94AF561A84148E0069AE1C /* AJEG_Core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9EDBA6D41A66AFC100E4FB74 /* AJEG_Core.cpp */; };
-		9E94AF591A8514C00069AE1C /* jo_jpeg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E94AF581A8514C00069AE1C /* jo_jpeg.cpp */; };
-		9E94AF5A1A8517680069AE1C /* jo_jpeg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E94AF581A8514C00069AE1C /* jo_jpeg.cpp */; };
 		9E94AF5D1A8520130069AE1C /* AJEG_Coders.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E94AF5B1A8520130069AE1C /* AJEG_Coders.cpp */; };
 		9E94AF611A871D7A0069AE1C /* AJEG_Coders.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E94AF5B1A8520130069AE1C /* AJEG_Coders.cpp */; };
 		9EDBA6A51A66ADC700E4FB74 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9EDBA6A41A66ADC700E4FB74 /* AppDelegate.mm */; };
@@ -58,7 +56,6 @@
 		9E94AF4E1A83E5760069AE1C /* ImageDisplayViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ImageDisplayViewController.mm; path = InputDataViewController/ImageDisplayViewController.mm; sourceTree = "<group>"; };
 		9E94AF531A83EE350069AE1C /* ImageDisplayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageDisplayView.h; path = InputDataViewController/ImageDisplayView.h; sourceTree = "<group>"; };
 		9E94AF541A83EE350069AE1C /* ImageDisplayView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ImageDisplayView.mm; path = InputDataViewController/ImageDisplayView.mm; sourceTree = "<group>"; };
-		9E94AF581A8514C00069AE1C /* jo_jpeg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = jo_jpeg.cpp; sourceTree = "<group>"; };
 		9E94AF5B1A8520130069AE1C /* AJEG_Coders.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AJEG_Coders.cpp; path = Encoder/AJEG_Coders.cpp; sourceTree = "<group>"; };
 		9E94AF5C1A8520130069AE1C /* AJEG_Coders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AJEG_Coders.h; path = Encoder/AJEG_Coders.h; sourceTree = "<group>"; };
 		9E94AF5E1A8528E50069AE1C /* AJEG_Tables.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AJEG_Tables.h; sourceTree = "<group>"; };
@@ -119,7 +116,6 @@
 		9E94AF571A8514600069AE1C /* JPEG */ = {
 			isa = PBXGroup;
 			children = (
-				9E94AF581A8514C00069AE1C /* jo_jpeg.cpp */,
 				9E94AF5E1A8528E50069AE1C /* AJEG_Tables.h */,
 				9E94AF5C1A8520130069AE1C /* AJEG_Coders.h */,
 				9E94AF5B1A8520130069AE1C /* AJEG_Coders.cpp */,
@@ -333,7 +329,6 @@
 				9E94AF4F1A83E5760069AE1C /* ImageDisplayViewController.mm in Sources */,
 				9EDBA6A71A66ADC700E4FB74 /* main.m in Sources */,
 				9EDBA6A51A66ADC700E4FB74 /* AppDelegate.mm in Sources */,
-				9E94AF5A1A8517680069AE1C /* jo_jpeg.cpp in Sources */,
 				9E94AF611A871D7A0069AE1C /* AJEG_Coders.cpp in Sources */,
 				9E94AF561A84148E0069AE1C /* AJEG_Core.cpp in Sources */,
 			);
@@ -351,7 +346,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9E94AF591A8514C00069AE1C /* jo_jpeg.cpp in Sources */,
 				9EDBA6CF1A66AE5200E4FB74 /* main.cpp in Sources */,
 				9EDBA6D61A66AFC100E4FB74 /* AJEG_Core.cpp in Sources */,
 				9E94AF5D1A8520130069AE1C /* AJEG_Coders.cpp in Sources */,
