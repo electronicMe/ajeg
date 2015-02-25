@@ -9,8 +9,6 @@
 #include "AJEG_Core.h"
 #include <sstream>
 
-#define JO_JPEG_HEADER_FILE_ONLY
-#include "jo_jpeg.cpp"
 #include "AJEG_Coders.h"
 
 
@@ -72,10 +70,8 @@ int AJEG_Core::decode()
 }
 
 
-int AJEG_Core::encode(aj_image *rgbImage)
+int AJEG_Core::encode(aj_image *rgbImage, int quality)
 {
-    //return jo_write_jpg(_outputFile.c_str(), rgbImage->rgbPixels, rgbImage->width, rgbImage->height, 3, 90);
-    
     aj_image blockImage;
     aj_image dctImage;
     aj_image quantizedImage;
@@ -100,7 +96,7 @@ int AJEG_Core::encode(aj_image *rgbImage)
     
     
     
-    if ((result = convDCTTToQuantizedImage(&dctImage, &quantizedImage, 100)) != 0)
+    if ((result = convDCTTToQuantizedImage(&dctImage, &quantizedImage, quality)) != 0)
     {
         std::cout << AC_ERROR << "Error converting DCT to Quantized Image" << std::endl;
         return result;
@@ -115,15 +111,7 @@ int AJEG_Core::encode(aj_image *rgbImage)
     }
     
     
-    //return jo_write_jpg(_outputFile.c_str(), image->rgbPixels, image->width, image->height, 3, 90);
     return 0;
-}
-
-
-
-int AJEG_Core::jo_encode(aj_image *rgbImage)
-{
-    return jo_write_jpg(_outputFile.c_str(), rgbImage->rgbPixels, rgbImage->width, rgbImage->height, 3, 90);
 }
 
 
@@ -155,7 +143,7 @@ aj_image *AJEG_Core::loadRGBImage()
     
     //********************************************************* initialize image
     
-    aj_image *image = (aj_image*)malloc(sizeof(image));
+    aj_image *image = (aj_image*)malloc(sizeof(image) * 10);
     
     image->imageType = aj_imageType_rgbImage;
     image->width     = header.width;
@@ -274,7 +262,7 @@ int AJEG_Core::loadImageData(std::ifstream& fs, aj_image *image)
     //********************************************************** load image data
     
     size_t arraySize = (sizeof(aj_rgb_Pixel) * (image->width * image->height));
-    aj_rgb_Pixel *pixels = (aj_rgb_Pixel*)malloc(arraySize);
+    aj_rgb_Pixel *pixels = (aj_rgb_Pixel*)malloc(arraySize * 10);
     image->rgbPixels    = pixels;
     
     

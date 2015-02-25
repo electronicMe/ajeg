@@ -754,9 +754,29 @@
                                     <rect key="frame" x="1" y="1" width="296" height="72"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yzs-Me-Saq">
-                                            <rect key="frame" x="95" y="30" width="106" height="17"/>
-                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Nothing here yet" id="hsL-Kz-x3g">
+                                        <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fhi-2r-NeP">
+                                            <rect key="frame" x="73" y="28" width="207" height="20"/>
+                                            <sliderCell key="cell" state="on" alignment="left" maxValue="100" doubleValue="100" tickMarkPosition="above" sliderType="linear" id="xVo-qC-RHY"/>
+                                        </slider>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lDb-oJ-4jh">
+                                            <rect key="frame" x="18" y="30" width="51" height="17"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Quality:" id="bvA-tS-ayv">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pIs-QE-5pM">
+                                            <rect key="frame" x="68" y="14" width="26" height="17"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0%" id="hZH-yY-bZm">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8QU-el-zrj">
+                                            <rect key="frame" x="252" y="14" width="41" height="17"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="100%" id="x8j-wM-wzu">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -932,6 +952,7 @@
                         <outlet property="errorImage_red" destination="2fj-df-47m" id="g3o-5s-rkn"/>
                         <outlet property="inputFileTextField" destination="ml9-QG-mGq" id="oBr-dA-lBh"/>
                         <outlet property="outputTextField" destination="gva-LW-LAb" id="FEn-GX-QxD"/>
+                        <outlet property="qualitySlider" destination="Fhi-2r-NeP" id="PHj-SD-tUA"/>
                         <outlet property="rgbImage_blue" destination="ZGL-lP-4Cg" id="VWk-It-jlC"/>
                         <outlet property="rgbImage_green" destination="M3B-m4-SAR" id="NXZ-WP-Glb"/>
                         <outlet property="rgbImage_red" destination="lJc-jb-0ul" id="yQE-Mf-o1y"/>

@@ -22,6 +22,7 @@ int main(int argc, const char * argv[])
     
     std::string inputFile  = "./input.pbm";
     std::string outputFile = "./output.jpg";
+    int         quality    = 100;
     
     
     int arg_index = 1;
@@ -40,6 +41,9 @@ int main(int argc, const char * argv[])
             case 'h':
                 printUsage((char*)argv[0]);
                 break;
+            case 'q':
+                quality = atoi(argv[arg_index + 1]);
+                break;
             default:
                 std::cout << AC_ERROR << "Unrecognized argument: " << argv[arg_index] << std::endl;
                 return EXIT_FAILURE;
@@ -50,10 +54,7 @@ int main(int argc, const char * argv[])
     
     AJEG_Core core(inputFile, outputFile);
     aj_image *image = core.loadRGBImage();
-    return core.jo_encode(image);
-    
-    
-    return EXIT_SUCCESS;
+    return core.encode(image, quality);
 }
 
 
@@ -67,6 +68,7 @@ static void printUsage(char *programPath) {
               << "\t-h,\t Show this message"              << std::endl
               << "\t-i,\t Path to the input file"         << std::endl
               << "\t-o,\t Path to the output file"        << std::endl
+              << "\t-q,\t Quality (0-100)"                << std::endl
               << "\t-p,\t Print information about the input file to the output" << std::endl
               << std::endl;
 }

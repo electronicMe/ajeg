@@ -422,7 +422,7 @@ int convDCTTToQuantizedImage(aj_image *sourceImage, aj_image *destinationImage, 
     destinationImage->height    = height;
     destinationImage->imageType = aj_imageType_quantizedImage;
     size_t numberOfBlocks       = (ceil(width / 8) * ceil(height / 8));
-    destinationImage->blocks    = (aj_block*)malloc(sizeof(aj_block) * numberOfBlocks);
+    destinationImage->blocks    = (aj_block*)malloc(sizeof(aj_block) * numberOfBlocks * 10);
     
     if (!destinationImage->blocks)
         return -1;
@@ -497,6 +497,7 @@ void quantizeChannel(float *sourceChannel, float *destinationChannel, float quan
 #pragma mark Quantized Image <--> File
 
 
+
 void writeJPEGHeaderForImage(FILE *fp, aj_image *image,
                              uint8_t *luminanceQuantizationTable  , size_t size_luminanceQuantizationTable,
                              uint8_t *chrominanceQuantizationTable, size_t size_chrominanceQuantizationTable);
@@ -551,7 +552,7 @@ int writeQuantizedImageToFile(aj_image *image, const char *destinationPath)
     
     
     
-    //******************************** quantize, ZigZag, AC and DC Encode blocks
+    //****************************************** ZigZag, AC and DC Encode blocks
     
     size_t numberOfBlocks = (ceil(image->width / 8) * ceil(image->height / 8));
     

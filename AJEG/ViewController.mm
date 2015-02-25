@@ -29,6 +29,8 @@
     IBOutlet NSButton *errorImage_green;
     IBOutlet NSButton *errorImage_blue;
     
+    IBOutlet NSSlider *qualitySlider;
+    
     AJEG_Core *_ajegCore;
     aj_image  *_image;
 }
@@ -57,9 +59,16 @@
     std::string outputFilePath([[outputTextField    stringValue] UTF8String]);
     
     _ajegCore = new AJEG_Core(inputFilePath, outputFilePath);
+    
     NSLog(@"loadRGBImage start");
+    NSDate *startDate = [NSDate date];
     _image    = _ajegCore->loadRGBImage();
+    NSDate *endDate = [NSDate date];
     NSLog(@"loadRGBImage stop");
+    
+    NSTimeInterval duration = [endDate timeIntervalSinceDate:startDate];
+    
+    NSLog(@"Load Duration: %f seconds, %f milliseconds, %f microseconds", duration, duration*100, duration*100);
 }
 
 
@@ -71,7 +80,15 @@
         return;
     }
     
-    _ajegCore->encode(_image);
+    NSLog(@"encode start");
+    NSDate *startDate = [NSDate date];
+    _ajegCore->encode(_image, [qualitySlider intValue]);
+    NSDate *endDate = [NSDate date];
+    NSLog(@"encode stop");
+    
+    NSTimeInterval duration = [endDate timeIntervalSinceDate:startDate];
+    
+    NSLog(@"Encode Duration: %f seconds, %f milliseconds, %f microseconds", duration, duration*100, duration*100);
 }
 
 
@@ -97,8 +114,6 @@
             channel |= AJ_Channel_Green;
         if ([rgbImage_blue  state])
             channel |= AJ_Channel_Blue;
-        
-        NSLog(@"channel: %d red: %d green: %d blue: %d", channel, AJ_Channel_Red, AJ_Channel_Green, AJ_Channel_Blue);
         
         
         [inputDataViewController setChannel:channel];

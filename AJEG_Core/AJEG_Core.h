@@ -113,8 +113,7 @@ public:
     aj_image *loadRGBImage();
     
     int decode();
-    int encode(aj_image *rgbImage);
-    int jo_encode(aj_image *rgbImage);
+    int encode(aj_image *rgbImage, int quality);
     
 private:
     
